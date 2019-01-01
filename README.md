@@ -8,9 +8,9 @@ Ocaml version 4.02.1 is tested under Mac OS X High Sierra, and Mojave
 Installation of the Z3 SMT solver with Ocaml bindings (https://github.com/Z3Prover/z3)
 is required, Z3 version 4.4.2 is tested.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Building the checker:
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Bytecode:
 
@@ -23,9 +23,9 @@ ocamlopt -o gcifc -I $Z3_HOME/build/api/ml/ -cclib "-L. -lz3" nums.cmxa z3ml.cmx
 In the above, $Z3_HOME/build/api/ml/ is the sub-directory for the z3 Ocaml API 
 under the build directory of Z3
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Running the checker: 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Bytecode:
 
