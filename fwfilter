@@ -8,7 +8,7 @@ l1c while true do
   l3c send(c_f1,h1_cli,pl1_cli);
   l4c recv(c_f1_p,h2_cli,pl2_cli);
   l5c send(c_usr_p,h2_cli,pl2_cli) 
-  od
+od
 
 ||
 
@@ -26,7 +26,7 @@ l1f while true do
      	    l10f send(c_f1_p,h2_fil,pl2_fil)
      else l11f send(c_au,h2_fil,pl2_fil) 
   fi
-  od
+od
 
 ||
 
