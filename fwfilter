@@ -3,88 +3,89 @@ BEGIN
 internal ( c_f1 c_f2 c_f1_p c_f2_p )
 
 cli:
-l1 while true do
-  l2 recv(c_usr,hdr_1,pld_1);
-  l3 send(c_f1,hdr_1,pld_1);
-  l4 recv(c_f1_p,hdr_1_p,pld_1_p);
-  l5 send(c_usr_p,hdr_1_p,pld_1_p)
+l1c while true do
+  l2c recv(c_usr,h1_cli,pl1_cli);
+  l3c send(c_f1,h1_cli,pl1_cli);
+  l4c recv(c_f1_p,h2_cli,pl2_cli);
+  l5c send(c_usr_p,h2_cli,pl2_cli) 
   od
 
 ||
 
 fil:
-l6 while true do
-  l7 recv(c_f1,hdr_p,pld_p);
-  l8 if hdr_p = (s + 1) % 6
-    then l9 s := hdr_p; 
-    	  l10 send(c_f2,hdr_p,pld_p)
-    else l11 send(c_au,hdr_p,pld_p)
+l1f while true do
+  l2f recv(c_f1,h1_fil,pl1_fil);
+  l3f if h1_fil = (s_fil + 1) % 6
+    then l4f s_fil := h1_fil; 
+    	  l5f send(c_f2,h1_fil,pl1_fil) 
+    else l6f send(c_au,h1_fil,pl1_fil) 
   fi;
-  l12 recv(c_f2_p,hdr_pp,pld_pp);
-  l13 if hdr_pp = (s + 1) % 6
-     then l14 s := hdr_pp;
-     	     l15 send(c_f1_p,hdr_pp,pld_pp)
-     else l16 send(c_au,hdr_pp,pld_pp)
+  l7f recv(c_f2_p,h2_fil,pl2_fil);
+  l8f if h2_fil = (s_fil + 1) % 6 
+     then l9f s_fil := h2_fil; 
+     	    l10f send(c_f1_p,h2_fil,pl2_fil)
+     else l11f send(c_au,h2_fil,pl2_fil) 
   fi
   od
 
 ||
 
 srv:
-l17 while true do 
-  l18 recv(c_f2,hdr_2,pld_2);
-  l19 send(c_app_p,hdr_2,pld_2);
-  l20 recv(c_app,hdr_2_p,pld_2_p);
-  l21 send(c_f2_p,hdr_2_p,pld_2_p)
+l1s while true do 
+  l2s recv(c_f2,h1_srv,pl1_srv);
+  l3s send(c_app_p,h1_srv,pl1_srv);
+  l4s recv(c_app,h2_srv,pl2_srv);
+  l5s send(c_f2_p,h2_srv,pl2_srv) 
 od
   
 END
 
 BEGIN invariants
-l1 -> (??~l1 : true), (tt~l1 : true); 
-l6 -> (??~l6,??~l8,??~l13 : s=hdr_pp), (tt~l6,tt~l8,tt~l13 : s=hdr_pp),
-      (tt~l6,ff~l8,tt~l13 : s=hdr_pp), (tt~l6,tt~l8,ff~l13 : true),
-			(tt~l6,ff~l8,ff~l13 : true); 
-l17 -> (??~l17 : true), (tt~l17 : true) 
+l1c -> (??~l1c : true), (tt~l1c : true); 
+l1f -> (??~l1f,??~l3f,??~l8f : s_fil=h2_fil), (tt~l1f,tt~l3f,tt~l8f : s_fil=h2_fil),
+      (tt~l1f,ff~l3f,tt~l8f : s_fil=h2_fil), (tt~l1f,tt~l3f,ff~l8f : true),
+			(tt~l1f,ff~l3f,ff~l8f : true); 
+l1s -> (??~l1s : true), (tt~l1s : true) 
 END invariants
 
 BEGIN assertions
-l7 -> (tt~l6,??~l8,??~l13 : s=hdr_pp), (tt~l6,tt~l8,tt~l13 : s=hdr_pp),
-      (tt~l6,tt~l8,ff~l13 : true), (tt~l6,ff~l8,tt~l13 : s=hdr_pp),
-			(tt~l6,ff~l8,ff~l13 : true); 
-l12 -> (tt~l6,tt~l8,??~l13 : s=hdr_p), (tt~l6,tt~l8,tt~l13 : s=hdr_p),
-       (tt~l6,tt~l8,ff~l13 : s=hdr_p), (tt~l6,ff~l8,??~l13 : true),
-			 (tt~l6,ff~l8,tt~l13 : true), (tt~l6,ff~l8,ff~l13 : true)
+l7 -> (tt~l1f,??~l3f,??~l8f : s_fil=h2_fil), (tt~l1f,tt~l3f,tt~l8f : s_fil=h2_fil),
+      (tt~l1f,tt~l3f,ff~l8f : true), (tt~l1f,ff~l3f,tt~l8f : s_fil=h2_fil), 
+			(tt~l1f,ff~l3f,ff~l8f : true); 
+l12 -> (tt~l1f,tt~l3f,??~l8f : s_fil=h1_fil), (tt~l1f,tt~l3f,tt~l8f : s_fil=h1_fil), 
+       (tt~l1f,tt~l3f,ff~l8f : s_fil=h1_fil), (tt~l1f,ff~l3f,??~l8f : true),
+			 (tt~l1f,ff~l3f,tt~l8f : true), (tt~l1f,ff~l3f,ff~l8f : true)
 END assertions
 
 BEGIN policies
 
 principals ( cli srv au )
 
-c_usr.2 -> (c_usr.1 = (hdr_2_p@srv + 1) % 6 ==> {srv}) /\
-                  (c_usr.1 != (hdr_2_p@srv + 1) % 6 ==> {au})
-pld_1 -> (hdr_1 = (hdr_2_p@srv + 1) % 6 ==> {srv}) /\
-                (hdr_1 != (hdr_2_p@srv + 1) % 6 ==> {au})  
-c_f1.2 -> (c_f1.1 = (hdr_2_p@srv + 1) % 6 ==> {srv}) /\
-                 (c_f1.1 != (hdr_2_p@srv + 1) % 6 ==> {au}) 
-pld_p -> (hdr_p = (s + 1) % 6 ==> {srv}) /\ 
-               (hdr_p != (s + 1) % 6 ==> {au})
+c_usr.2 -> (c_usr.1 = (h2_srv@srv + 1) % 6 ==> {srv}) /\
+                  (c_usr.1 != (h2_srv@srv + 1) % 6 ==> {au})
+pl1_cli -> (h1_cli = (h2_srv@srv + 1) % 6 ==> {srv}) /\
+                (h1_cli != (h2_srv@srv + 1) % 6 ==> {au})  
+c_f1.2 -> (c_f1.1 = (h2_srv@srv + 1) % 6 ==> {srv}) /\
+                 (c_f1.1 != (h2_srv@srv + 1) % 6 ==> {au}) 
+pl1_fil -> (h1_fil = (s_fil + 1) % 6 ==> {srv}) /\ 
+               (h1_fil != (s_fil + 1) % 6 ==> {au})
 c_f2.2 -> (true ==> {srv}) 
-pld_2 -> (true ==> {srv})
+pl1_srv -> (true ==> {srv})
 c_app_p.2 -> (true ==> {})
 
-c_app.2 -> (c_app.1 = (hdr_1@cli + 1) % 6 ==> {cli}) /\
-                   (c_app.1 != (hdr_1@cli + 1) % 6 ==> {au})
-pld_2_p -> (hdr_2_p = (hdr_1@cli + 1) % 6 ==> {cli}) /\
-                   (hdr_2_p != (hdr_1@cli + 1) % 6 ==> {au})
-c_f2_p.2 -> (c_f2_p.1 = (hdr_1@cli + 1) % 6 ==> {cli}) /\
-                    (c_f2_p.1 != (hdr_1@cli + 1) % 6 ==> {au})
-pld_pp -> (hdr_pp = (s + 1) % 6 ==> {cli}) /\
-                 (hdr_pp != (s + 1) % 6 ==> {au}) 
+c_app.2 -> (c_app.1 = (h1_cli@cli + 1) % 6 ==> {cli}) /\
+                   (c_app.1 != (h1_cli@cli + 1) % 6 ==> {au})
+pl2_srv -> (h2_srv = (h1_cli@cli + 1) % 6 ==> {cli}) /\
+                   (h2_srv != (h1_cli@cli + 1) % 6 ==> {au})
+c_f2_p.2 -> (c_f2_p.1 = (h1_cli@cli + 1) % 6 ==> {cli}) /\
+                    (c_f2_p.1 != (h1_cli@cli + 1) % 6 ==> {au})
+pl2_fil -> (h2_fil = (s_fil + 1) % 6 ==> {cli}) /\
+                 (h2_fil != (s_fil + 1) % 6 ==> {au})  
 c_f1_p.2 -> (true ==> {cli})
-pld_1_p -> (true ==> {cli})
+pl2_cli -> (true ==> {cli})
 c_usr_p.2 -> (true ==> {})
 
 c_au.2 -> (true ==> {au})
 
 END policies
+
