@@ -49,10 +49,10 @@ l1s -> (??~l1s : true), (tt~l1s : true)
 END invariants
 
 BEGIN assertions
-l7 -> (tt~l1f,??~l3f,??~l8f : s_fil=h2_fil), (tt~l1f,tt~l3f,tt~l8f : s_fil=h2_fil),
+l2f -> (tt~l1f,??~l3f,??~l8f : s_fil=h2_fil), (tt~l1f,tt~l3f,tt~l8f : s_fil=h2_fil),
       (tt~l1f,tt~l3f,ff~l8f : true), (tt~l1f,ff~l3f,tt~l8f : s_fil=h2_fil), 
 			(tt~l1f,ff~l3f,ff~l8f : true); 
-l12 -> (tt~l1f,tt~l3f,??~l8f : s_fil=h1_fil), (tt~l1f,tt~l3f,tt~l8f : s_fil=h1_fil), 
+l7f -> (tt~l1f,tt~l3f,??~l8f : s_fil=h1_fil), (tt~l1f,tt~l3f,tt~l8f : s_fil=h1_fil), 
        (tt~l1f,tt~l3f,ff~l8f : s_fil=h1_fil), (tt~l1f,ff~l3f,??~l8f : true),
 			 (tt~l1f,ff~l3f,tt~l8f : true), (tt~l1f,ff~l3f,ff~l8f : true)
 END assertions
@@ -88,4 +88,3 @@ c_usr_p.2 -> (true ==> {})
 c_au.2 -> (true ==> {au})
 
 END policies
-
