@@ -128,26 +128,6 @@ let mk_locbrfms_mp pts brfms =
 			PtsMap.empty
 			pts
 
-(* let rec pts_of pt prstmt_lst = *)
-(* 	match prstmt_lst with *)
-(* 	| (pr, stmt) :: prstmt_lst' -> *)
-(* 		 let pts = pts_of_stmt stmt in *)
-(* 		 if (List.mem pt pts) then *)
-(* 			 pts *)
-(* 		 else *)
-(* 			 ( *)
-(* 				 match pt with *)
-(* 				 | (Pt str) -> *)
-(* 						( *)
-(* 						if str = ("f_" ^ (string_of_prin pr)) then *)
-(* 							pts *)
-(* 						else *)
-(* 							(pts_of pt prstmt_lst') *)
-(* 						) *)
-(* 			 ) *)
-(* 	| _ -> raise (Failure ("program point " ^ (string_of_pt pt) ^ *)
-(* 									" is not in any list")) *)
-
 let rec brpts_of_stmt stmt = (
   match stmt with
   | SSkip _ | SAssg _ | SOt _ | SIn _ -> []
@@ -262,6 +242,3 @@ let brana sys =
 	let (anamp0, wl0) = init gmap sys cnsmp in 
 	let res = iterate cnsmp anamp0 wl0 in
 	localize_brana_res gmap res sys
-
-
-
